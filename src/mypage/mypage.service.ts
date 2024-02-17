@@ -14,7 +14,7 @@ export class MypageService {
     ) {} 
 
     //userid를 가진 board 배열 
-    async getBoardsbyUserId(userid: number): Promise<Board[]> {
+    async getBoardsbyUserID(userid: number): Promise<Board[]> {
         return await this.boardRepository.find({where: {userid}});
     }
 
@@ -28,17 +28,23 @@ export class MypageService {
         return this.boardRepository.createBoard(createBoardDto);
     }
 
-    async getUserByID(userid: number): Promise<User> {
+    //UserID로 유저 찾기
+    async getUserByUserID(userid: number): Promise<User> {
         const found = await this.userRepository.findOne({where:{userid}});
 
         if(!found) {
-            throw new NotFoundException(`Can't find Board with id ${userid}`);
+            throw new NotFoundException(`Can't find User with id ${userid}`);
         }
         return found;
     }
 
     //유저의 닉네임 바꾸기
-    // async updateUserNickname(userid: number, nickname: string): Promise<User>{
-    //     const user = await this.getUserByID(userid);
-    // }
+    async updateUserNickname(userid: number, nickname: string): Promise<User>{
+        const user = await this.getUserByUserID(userid);
+
+        user.nickname = nickname;
+        await this.userRepository.save(user);
+
+        return user;
+    }
 }

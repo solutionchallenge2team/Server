@@ -12,7 +12,7 @@ export class MypageController {
     //userid로 유저가 작성한 글 get
     @Get('/:userid/boards')
     async getMyBoards(@Param('userid') userid: number): Promise<Board[]> {
-        const found =  await this.mypageService.getBoardsbyUserId(userid);
+        const found =  await this.mypageService.getBoardsbyUserID(userid);
 
         return found;
     }
@@ -20,7 +20,7 @@ export class MypageController {
     //userid로 유저 정보 get
     @Get('/:userid')
     async getUserByID(@Param('userid') userid: number): Promise<User> {
-        const found = await this.mypageService.getUserByID(userid);
+        const found = await this.mypageService.getUserByUserID(userid);
 
         return found;
     }
@@ -37,8 +37,8 @@ export class MypageController {
         return this.mypageService.createUserBoard(CreateBoardDto);
     }
 
-    // @Patch()
-    // updateUserNickname(@Body('nickname') nickname: string, @Param('userid' userid: number): Promise<User>{
-        
-    // }
+    @Patch('/:userid')
+    updateUserNickname(@Param('userid') userid: number, @Body('nickname') nickname: string): Promise<User>{
+        return this.mypageService.updateUserNickname(userid, nickname);
+    }
 }
