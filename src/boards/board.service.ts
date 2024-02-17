@@ -14,7 +14,7 @@ export class BoardsService {
     }
     
     //id를 이용해서 게시물 가져오기
-    async getBoardByID(id: number): Promise<Board> {
+    async getBoardById(id: number): Promise<Board> {
         const found = await this.boardRepository.findOne({where:{id}});
 
         if(!found) {
@@ -40,7 +40,7 @@ export class BoardsService {
 
     //게시물 title, description 바꾸기
     async updateBoard(id: number, newtitle: string, newcontent: string, newlocation: string): Promise<Board>{
-        const board = await this.getBoardByID(id);
+        const board = await this.getBoardById(id);
 
         board.title = newtitle;
         board.content = newcontent;
