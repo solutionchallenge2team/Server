@@ -12,9 +12,9 @@ export class BoardsController {
         return this.boardsService.getAllBoards();
     }
 
-    @Get('/:id')
-    getBoardById(@Param('id') id: number): Promise<Board>{
-        return this.boardsService.getBoardById(id);
+    @Get('/:boardId')
+    getBoardById(@Param('boardId') boardId: number): Promise<Board>{
+        return this.boardsService.getBoardById(boardId);
     }
 
     @Post()
@@ -22,18 +22,26 @@ export class BoardsController {
         return this.boardsService.createBoard(createBoardDto);
     }
 
-    @Delete('/:id')
-    deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
+    @Delete('/:boardId')
+    deleteBoard(@Param('boardId', ParseIntPipe) id): Promise<void> {
         return this.boardsService.deleteBoard(id);
     }
 
-    @Patch('/:id')
+    @Patch('/:boardId')
     updateBoard(
-        @Param('id', ParseIntPipe) id,
+        @Param('boardId', ParseIntPipe) boardId,
         @Body('newtitle') newtitle: string, 
         @Body('newcontent') newcontent:string,
         @Body('newlocation') newlocation:string
     ){
-        return this.boardsService.updateBoard(id, newtitle, newcontent, newlocation);
+        return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation);
+    }
+
+    @Patch('/:boardId/newReply')
+    createBoardReply(
+        @Param('boardId') boardId,
+        @Body('newReply') newReply: string,
+    ){
+        return this.boardsService.createBoardReply(boardId, newReply);
     }
 }

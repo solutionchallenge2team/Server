@@ -5,7 +5,7 @@ import { User } from "src/auth/user.entity";
 @Entity()
 export class Board extends BaseEntity{
     @PrimaryGeneratedColumn()
-    id: number; //게시물 id
+    boardId: number; //게시물 id
 
     @Column()
     title: string;  //게시물 제목
@@ -27,6 +27,9 @@ export class Board extends BaseEntity{
 
     @Column()
     userid: number;     //userid
+
+    @Column()
+    replys: string;
     
     // @ManyToOne(type => User, user => user.boards, {eager: false})
     // user: User;

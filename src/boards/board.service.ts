@@ -14,11 +14,11 @@ export class BoardsService {
     }
     
     //id를 이용해서 게시물 가져오기
-    async getBoardById(id: number): Promise<Board> {
-        const found = await this.boardRepository.findOne({where:{id}});
+    async getBoardById(boardId: number): Promise<Board> {
+        const found = await this.boardRepository.findOne({where:{boardId}});
 
         if(!found) {
-            throw new NotFoundException(`Can't find Board with id ${id}`);
+            throw new NotFoundException(`Can't find Board with boardId ${boardId}`);
         }
         return found;
     }
@@ -29,22 +29,33 @@ export class BoardsService {
     }
 
     //게시물 삭제하기
-    async deleteBoard(id: number): Promise<void>{
+    async deleteBoard(boardId: number): Promise<void>{
         //삭제 권한 추가해야함
-        const result = await this.boardRepository.delete(id);
+        const result = await this.boardRepository.delete(boardId);
 
         if(result.affected===0) {
-            throw new NotFoundException(`Can't find board with id ${id}`);
+            throw new NotFoundException(`Can't find board with boardId ${boardId}`);
         }
     }
 
     //게시물 title, description 바꾸기
-    async updateBoard(id: number, newtitle: string, newcontent: string, newlocation: string): Promise<Board>{
-        const board = await this.getBoardById(id);
+    async updateBoard(boardId: number, newtitle: string, newcontent: string, newlocation: string): Promise<Board>{
+        const board = await this.getBoardById(boardId);
 
+        //new 가 "" 이면 기존 값이 유지되도록 바꿔야 함
         board.title = newtitle;
         board.content = newcontent;
         board.location = newlocation;
+        await this.boardRepository.save(board);
+
+        return board;
+    }
+
+    //boarId로 Board가져오고 replys배열에 newreply 추가
+    async createBoardReply(boardId: number, newReply: string): Promise<Board>{
+        const board = await this.getBoardById(boardId);
+
+        board.replys = newReply;
         await this.boardRepository.save(board);
 
         return board;
