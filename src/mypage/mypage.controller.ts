@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, } from '@nestjs/common';
 import { MypageService } from './mypage.service';
 import { Board } from 'src/boards/board.entity';
 import { CreateUserDto } from 'src/auth/dto/create-user-dto';
@@ -9,21 +9,36 @@ import { CreateBoardDto } from 'src/auth/dto/create-board-dto';
 export class MypageController {
     constructor(private mypageService: MypageService){}
 
-    //userid로 유저가 작성한 글 불러오기
-    @Get('/:userid')
-    async getMyBoards(@Param('userid') userid: number): Promise<Board> {
+    //userid로 유저가 작성한 글 get
+    @Get('/:userid/boards')
+    async getMyBoards(@Param('userid') userid: number): Promise<Board[]> {
         const found =  await this.mypageService.getBoardsbyUserId(userid);
 
         return found;
     }
 
+    //userid로 유저 정보 get
+    @Get('/:userid')
+    async getUserByID(@Param('userid') userid: number): Promise<User> {
+        const found = await this.mypageService.getUserByID(userid);
+
+        return found;
+    }
+
+    //유저 생성하기
     @Post()
     createUser(@Body() createuserDto: CreateUserDto): Promise<User> {
         return this.mypageService.createUser(createuserDto);
     }
 
+    //보드 생성하기
     @Post()
     createUserBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board>{
         return this.mypageService.createUserBoard(CreateBoardDto);
     }
+
+    // @Patch()
+    // updateUserNickname(@Body('nickname') nickname: string, @Param('userid' userid: number): Promise<User>{
+        
+    // }
 }
