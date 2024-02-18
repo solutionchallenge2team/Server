@@ -11,11 +11,9 @@ export class AuthService {
         private userRepository: UserRepository,
     ) {}
 
-    private logger = new Logger('AuthService'); 
 
 
     async signUp(createuserDto: CreateUserDto): Promise<User> {
-        this.logger.verbose(`signing up in service`);
         return this.userRepository.createUser(createuserDto);
     }
 }

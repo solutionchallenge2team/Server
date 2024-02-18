@@ -3,7 +3,7 @@ import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
 import { Reply } from "src/reply/reply.entity";
-import { CreateReplyDto } from "src/auth/dto/cretae-reply-dto";
+import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 
 @Controller('boards')
 export class BoardsController {
@@ -14,31 +14,36 @@ export class BoardsController {
         return this.boardsService.getAllBoards();
     }
 
+    //id를 이용해서 게시물 가져오기
     @Get('/:boardId')
     getBoardById(@Param('boardId') boardId: number): Promise<Board>{
         return this.boardsService.getBoardById(boardId);
     }
 
+    //게시물 생성하기, userid는 입력이 아니라 자동으로 가져와야 한다. 
     @Post()
     createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
         return this.boardsService.createBoard(createBoardDto);
     }
 
+    //게시물 삭제하기
     @Delete('/:boardId')
     deleteBoard(@Param('boardId', ParseIntPipe) id): Promise<void> {
         return this.boardsService.deleteBoard(id);
     }
 
+    //게시물 title, description 바꾸기
     @Patch('/:boardId')
     updateBoard(
         @Param('boardId', ParseIntPipe) boardId,
         @Body('newtitle') newtitle: string, 
         @Body('newcontent') newcontent:string,
         @Body('newlocation') newlocation:string
-    ){
+    ): Promise<Board>{
         return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation);
     }
 
+    //boarId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가
     @Patch('/:boardId/newReply')
     async addBoardReply(
         @Param('boardId', ParseIntPipe) boardId: number,
@@ -64,7 +69,7 @@ export class BoardsController {
 
     //URL을 /:top10 으로 쓰면 위에 있는 @Get('/:boardId') 랑 구분 못한다
     //이렇게 써도 되려나?
-    @Get('/:top/10')
+    @Get('/top10')
     getTop10Boards(){
         return this.boardsService.getTop10Boards();
     }

@@ -6,13 +6,10 @@ import { Logger } from "@nestjs/common";
 
 @CustomRepository(User)
 export class UserRepository extends Repository<User>{
-    private logger = new Logger('UserRepository'); 
 
     async createUser(createUserDto: CreateUserDto): Promise<User>{
-        this.logger.verbose(`this is createUserDto: ${createUserDto}`);
 
         const { nickname, email, password, userLevel, community} = createUserDto;
-        this.logger.verbose(`created`);
         
         const user = this.create({
             nickname,
@@ -21,7 +18,6 @@ export class UserRepository extends Repository<User>{
             userLevel,
             community
         });
-        this.logger.verbose(`made user ${user}`);
         await this.save(user);
         return user;
     }
