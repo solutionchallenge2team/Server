@@ -1,4 +1,4 @@
-import {Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException } from '@nestjs/common';
 import { BoardRepository } from 'src/boards/board.repository';
 import { Board } from 'src/boards/board.entity';
 import { UserRepository } from '../auth/user.repository';
@@ -14,10 +14,8 @@ export class MypageService {
     ) {} 
 
     //userid를 가진 board 배열 
-    async getBoardsbyUserId(userid: number): Promise<Board> {
-        const found = await this.boardRepository.findOne({where: {userid}});
-
-        return found;
+    async getBoardsbyUserID(userid: number): Promise<Board[]> {
+        return await this.boardRepository.find({where: {userid}});
     }
 
     //user 생성해서 userRepository에 저장
@@ -29,4 +27,26 @@ export class MypageService {
     createUserBoard(createBoardDto: CreateBoardDto): Promise<Board>{
         return this.boardRepository.createBoard(createBoardDto);
     }
+
+    //UserID로 유저 찾기
+    async getUserByUserID(userid: number): Promise<User> {
+        const found = await this.userRepository.findOne({where:{userid}});
+
+        if(!found) {
+            throw new NotFoundException(`Can't find User with id ${userid}`);
+        }
+        return found;
+    }
+
+    //유저의 닉네임 바꾸기
+    async updateUserNickname(userid: number, nickname: string): Promise<User>{
+        const user = await this.getUserByUserID(userid);
+
+        user.nickname = nickname;
+        await this.userRepository.save(user);
+
+        return user;
+    }
+
+    
 }

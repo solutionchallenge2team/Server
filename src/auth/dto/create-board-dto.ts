@@ -1,16 +1,16 @@
 import { IsNotEmpty } from "class-validator";
+import { Reply } from "src/reply/reply.entity";
 
 export class CreateBoardDto {
-    @IsNotEmpty()
+    //@IsNotEmpty()
     title: string;      //제목
 
-    @IsNotEmpty()
+    //@IsNotEmpty()
     content: string;    //설명
 
-    @IsNotEmpty()        
+    //@IsNotEmpty()        
     location: string;   //위치
 
-    @IsNotEmpty()
+    //@IsNotEmpty()
     userid: number;
-
 }

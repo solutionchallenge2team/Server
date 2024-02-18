@@ -3,8 +3,8 @@ import { BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } fro
 @Entity()
 export class Community extends BaseEntity{
     @PrimaryGeneratedColumn()
-    communityid: number;
+    communityId: number;
 
     @Column()
-    communityname: string;
+    communityName: string;
 }

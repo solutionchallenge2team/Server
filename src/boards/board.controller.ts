@@ -2,6 +2,8 @@ import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch } from 
 import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
+import { Reply } from "src/reply/reply.entity";
+import { CreateReplyDto } from "src/auth/dto/cretae-reply-dto";
 
 @Controller('boards')
 export class BoardsController {
@@ -12,9 +14,9 @@ export class BoardsController {
         return this.boardsService.getAllBoards();
     }
 
-    @Get('/:id')
-    getBoardByID(@Param('id') id: number): Promise<Board>{
-        return this.boardsService.getBoardByID(id);
+    @Get('/:boardId')
+    getBoardById(@Param('boardId') boardId: number): Promise<Board>{
+        return this.boardsService.getBoardById(boardId);
     }
 
     @Post()
@@ -22,18 +24,48 @@ export class BoardsController {
         return this.boardsService.createBoard(createBoardDto);
     }
 
-    @Delete('/:id')
-    deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
+    @Delete('/:boardId')
+    deleteBoard(@Param('boardId', ParseIntPipe) id): Promise<void> {
         return this.boardsService.deleteBoard(id);
     }
 
-    @Patch('/:id')
+    @Patch('/:boardId')
     updateBoard(
-        @Param('id', ParseIntPipe) id,
+        @Param('boardId', ParseIntPipe) boardId,
         @Body('newtitle') newtitle: string, 
         @Body('newcontent') newcontent:string,
         @Body('newlocation') newlocation:string
     ){
-        return this.boardsService.updateBoard(id, newtitle, newcontent, newlocation);
+        return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation);
+    }
+
+    @Patch('/:boardId/newReply')
+    async addBoardReply(
+        @Param('boardId', ParseIntPipe) boardId: number,
+        @Body() createReplyDto: CreateReplyDto
+    ){
+        return this.boardsService.addBoardReply(boardId, createReplyDto);
+    }
+
+    @Patch('/:boardId/increaseHearts')
+    increaseHearts(
+        @Param('boardId') boardId,
+    ){
+        return this.boardsService.increaseHearts(boardId);
+    }
+
+    @Patch('/:boardId/decreaseHearts')
+    decreaseHearts(
+        @Param('boardId') boardId,
+    ){
+        return this.boardsService.decreaseHearts(boardId);
+    }
+
+
+    //URL을 /:top10 으로 쓰면 위에 있는 @Get('/:boardId') 랑 구분 못한다
+    //이렇게 써도 되려나?
+    @Get('/:top/10')
+    getTop10Boards(){
+        return this.boardsService.getTop10Boards();
     }
 }
