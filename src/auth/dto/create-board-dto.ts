@@ -13,5 +13,4 @@ export class CreateBoardDto {
 
     //@IsNotEmpty()
     userid: number;
-
 }

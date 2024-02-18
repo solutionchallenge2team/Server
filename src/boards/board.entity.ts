@@ -1,5 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BoardStatus } from "./board-status.enum";
+import { Reply } from "src/reply/reply.entity";
 
 @Entity()
 export class Board extends BaseEntity{
@@ -30,6 +31,6 @@ export class Board extends BaseEntity{
     @Column({type: 'jsonb', nullable: true})
     replys: string[]; // Reply 엔티티의 배열
     
-    // @ManyToOne(type => User, user => user.boards, {eager: false})
-    // user: User;
+    @OneToMany(() => Reply, reply => reply.board)
+    replies: Reply[]; // Board 엔티티에 Reply 엔티티의 배열을 정의합니다.
 }

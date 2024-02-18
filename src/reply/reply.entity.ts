@@ -7,8 +7,8 @@ export class Reply extends BaseEntity {
     replyId: number; // 댓글 id
 
     @Column()
-    content: string; // 댓글 내용
+    replyContent: string; // 댓글 내용
 
-    @ManyToOne(() => Board, board => board.replys) // ManyToOne 관계 설정
-    board: Board; // Board 엔티티와의 관계
+    @ManyToOne(() => Board, board => board.replies)
+    board: Board; // Reply 엔티티에 Board 엔티티와의 관계를 정의합니다.
 }

@@ -2,11 +2,14 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Board } from "./board.entity";
 import { BoardRepository } from "./board.repository";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
+import { Reply } from "src/reply/reply.entity";
+import { ReplyRepository } from "src/reply/reply.repository";
 
 @Injectable()
 export class BoardsService {
     constructor(
         private boardRepository: BoardRepository,
+        private replyRepository: ReplyRepository
     ) {}
 
     async getAllBoards(): Promise<Board[]> {
@@ -60,16 +63,26 @@ export class BoardsService {
     }
 
     //boarId로 Board가져오고 replys배열에 newreply 추가
-    async createBoardReply(boardId: number, newReply: string): Promise<Board>{
-        const board = await this.getBoardById(boardId);
+    // async addBoardReply(boardId: number, createReplyDto: CreateBoardDto): Promise<Board>{
+    //     const board = await this.getBoardById(boardId);
 
-        board.replys = board.replys || [];
+    //     const newReply = new Reply();
+    //     newReply.replyId = createReplyDto;
+    //     newReply.board = board;
 
-        board.replys.push(newReply);
-        await this.boardRepository.save(board);
+    //     if (!board.replies) {
+    //         board.replies = [];
+    //     }
+        
 
-        return board;
-    }
+        
+    //     board.replies.push(newReply);
+
+    //     await this.replyRepository.save(newReply);
+    //     await this.boardRepository.save(board);
+
+    //     return board;
+    // }
     
     //좋아요 수 1씩 증가하기(Url이 Patch될 때마다 1씩 증가)
     async increaseHearts(boardId: number): Promise<Board> {

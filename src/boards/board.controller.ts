@@ -2,6 +2,8 @@ import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch } from 
 import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
+import { Reply } from "src/reply/reply.entity";
+import { CreateReplyDto } from "src/auth/dto/cretae-reply-dto";
 
 @Controller('boards')
 export class BoardsController {
@@ -37,13 +39,13 @@ export class BoardsController {
         return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation);
     }
 
-    @Patch('/:boardId/newReply')
-    createBoardReply(
-        @Param('boardId') boardId,
-        @Body('newReply') newReply: string,
-    ){
-        return this.boardsService.createBoardReply(boardId, newReply);
-    }
+    // @Patch('/:boardId/newReply')
+    // async addBoardReply(
+    //     @Param('boardId', ParseIntPipe) boardId: number,
+    //     @Body() createReplyDto: CreateReplyDto
+    // ){
+    //     return this.boardsService.addBoardReply(boardId, createReplyDto);
+    // }
 
     @Patch('/:boardId/increaseHearts')
     increaseHearts(
