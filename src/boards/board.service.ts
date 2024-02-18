@@ -78,6 +78,18 @@ export class BoardsService {
         await this.boardRepository.save(board);
         return board;
     }
+
+    //좋아요 수 1씩 감소하기(Url이 Patch될 때마다 1씩 감소)
+    async decreaseHearts(boardId: number): Promise<Board> {
+        const board = await this.boardRepository.findOne({where: {boardId}});
+        if (!board) {
+            throw new Error(`Board with ID ${boardId} not found`);
+        }
+
+        board.hearts = board.hearts - 1;
+        await this.boardRepository.save(board);
+        return board;
+    }
     
     //TOP10만 가져오기
     async getTop10Boards(): Promise<Board[]> {

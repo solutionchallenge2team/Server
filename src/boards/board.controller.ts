@@ -2,7 +2,6 @@ import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch } from 
 import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
-import { Reply } from "src/reply/reply.entity";
 
 @Controller('boards')
 export class BoardsController {
@@ -53,7 +52,14 @@ export class BoardsController {
         return this.boardsService.increaseHearts(boardId);
     }
 
-    
+    @Patch('/:boardId/decreaseHearts')
+    decreaseHearts(
+        @Param('boardId') boardId,
+    ){
+        return this.boardsService.decreaseHearts(boardId);
+    }
+
+
     //URL을 /:top10 으로 쓰면 위에 있는 @Get('/:boardId') 랑 구분 못한다
     //이렇게 써도 되려나?
     @Get('/:top/10')
