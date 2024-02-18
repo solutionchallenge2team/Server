@@ -45,4 +45,13 @@ export class BoardsController {
     ){
         return this.boardsService.createBoardReply(boardId, newReply);
     }
+
+    @Patch('/:boardId/increaseHearts')
+    increaseHearts(
+        @Param('boardId') boardId,
+    ){
+        return this.boardsService.increaseHearts(boardId);
+    }
+
+    
 }

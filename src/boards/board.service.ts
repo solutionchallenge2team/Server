@@ -12,7 +12,10 @@ export class BoardsService {
     ) {}
 
     async getAllBoards(): Promise<Board[]> {
-        return this.boardRepository.find();
+        return this.boardRepository.find({order: {
+            boardId: 'ASC' // 오름차순으로 정렬
+        }
+    });
     }
     
     //id를 이용해서 게시물 가져오기
@@ -63,6 +66,18 @@ export class BoardsService {
         board.replys.push(newReply);
         await this.boardRepository.save(board);
 
+        return board;
+    }
+    
+    //좋아요 수 1씩 증가하기(Url이 Patch될 때마다 1씩 증가)
+    async increaseHearts(boardId: number): Promise<Board> {
+        const board = await this.boardRepository.findOne({where: {boardId}});
+        if (!board) {
+            throw new Error(`Board with ID ${boardId} not found`);
+        }
+
+        board.hearts = board.hearts + 1;
+        await this.boardRepository.save(board);
         return board;
     }
     
