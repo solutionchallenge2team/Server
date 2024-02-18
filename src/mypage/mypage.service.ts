@@ -15,7 +15,7 @@ export class MypageService {
 
     //userid를 가진 board 배열 
     async getBoardsbyUserID(userid: number): Promise<Board[]> {
-        return await this.boardRepository.find({where: {userid}});
+        return this.userRepository.find({where: {userid}});
     }
 
     //user 생성해서 userRepository에 저장

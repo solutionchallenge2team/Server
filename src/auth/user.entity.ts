@@ -23,7 +23,7 @@ export class User extends BaseEntity{
     @Column()
     community: string;
 
-    // @OneToMany(type => Board, board => board.userid, {eager: true})
-    // boards: Board[];
+    @OneToMany(type => Board, board => board.userid)
+    boards: Board[];
     // //유저가 작성한 글을 엔티티에 리스트로 포함시켜야한다. 
 }
