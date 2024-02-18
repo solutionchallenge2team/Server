@@ -4,6 +4,7 @@ import { BoardRepository } from "./board.repository";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
 import { Reply } from "src/reply/reply.entity";
 import { ReplyRepository } from "src/reply/reply.repository";
+import { CreateReplyDto } from "src/auth/dto/cretae-reply-dto";
 
 @Injectable()
 export class BoardsService {
@@ -34,6 +35,22 @@ export class BoardsService {
         return this.boardRepository.createBoard(createBoardDto);
     }
 
+    //boarId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가
+    async addBoardReply(boardId: number, createReplyDto: CreateReplyDto): Promise<void>{
+        const board = await this.getBoardById(boardId);
+
+        if (!board.replies) {
+            board.replies = [];
+        }
+
+        const newReply = await this.replyRepository.createReply(createReplyDto);
+
+        board.replies.push(newReply);
+
+        await this.replyRepository.save(newReply);
+        await this.boardRepository.save(board);
+    }
+
     //게시물 삭제하기
     async deleteBoard(boardId: number): Promise<void>{
         //삭제 권한 추가해야함
@@ -61,28 +78,6 @@ export class BoardsService {
 
         return board;
     }
-
-    //boarId로 Board가져오고 replys배열에 newreply 추가
-    // async addBoardReply(boardId: number, createReplyDto: CreateBoardDto): Promise<Board>{
-    //     const board = await this.getBoardById(boardId);
-
-    //     const newReply = new Reply();
-    //     newReply.replyId = createReplyDto;
-    //     newReply.board = board;
-
-    //     if (!board.replies) {
-    //         board.replies = [];
-    //     }
-        
-
-        
-    //     board.replies.push(newReply);
-
-    //     await this.replyRepository.save(newReply);
-    //     await this.boardRepository.save(board);
-
-    //     return board;
-    // }
     
     //좋아요 수 1씩 증가하기(Url이 Patch될 때마다 1씩 증가)
     async increaseHearts(boardId: number): Promise<Board> {

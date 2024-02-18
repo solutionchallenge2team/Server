@@ -39,13 +39,13 @@ export class BoardsController {
         return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation);
     }
 
-    // @Patch('/:boardId/newReply')
-    // async addBoardReply(
-    //     @Param('boardId', ParseIntPipe) boardId: number,
-    //     @Body() createReplyDto: CreateReplyDto
-    // ){
-    //     return this.boardsService.addBoardReply(boardId, createReplyDto);
-    // }
+    @Patch('/:boardId/newReply')
+    async addBoardReply(
+        @Param('boardId', ParseIntPipe) boardId: number,
+        @Body() createReplyDto: CreateReplyDto
+    ){
+        return this.boardsService.addBoardReply(boardId, createReplyDto);
+    }
 
     @Patch('/:boardId/increaseHearts')
     increaseHearts(
