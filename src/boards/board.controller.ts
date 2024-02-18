@@ -20,7 +20,7 @@ export class BoardsController {
         return this.boardsService.getBoardById(boardId);
     }
 
-    //게시물 생성하기, userid는 입력이 아니라 자동으로 가져와야 한다. 
+    //게시물 생성하기, user 자동으로 같이 저장되어야 한다.
     @Post()
     createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
         return this.boardsService.createBoard(createBoardDto);
@@ -67,8 +67,6 @@ export class BoardsController {
     }
 
 
-    //URL을 /:top10 으로 쓰면 위에 있는 @Get('/:boardId') 랑 구분 못한다
-    //이렇게 써도 되려나?
     @Get('/top10')
     getTop10Boards(){
         return this.boardsService.getTop10Boards();

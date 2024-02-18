@@ -11,7 +11,7 @@ import { User } from "src/auth/user.entity";
 export class BoardRepository extends Repository<Board> {
     
     async createBoard(createBoardDto: CreateBoardDto): Promise<Board>{
-        const { userid, title, content, location} = createBoardDto;
+        const { title, content, location} = createBoardDto;
 
         const board = this.create({
             title,
@@ -19,7 +19,6 @@ export class BoardRepository extends Repository<Board> {
             location,
             hearts:0,
             status:BoardStatus.VALID,
-            userid,
             replys: [],
         });
 

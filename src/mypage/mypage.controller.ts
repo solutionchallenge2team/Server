@@ -11,7 +11,7 @@ export class MypageController {
 
     //userid로 유저가 작성한 글 get
     @Get('/:userid/boards')
-    async getMyBoards(@Param('userid') userid: number): Promise<Board[]> {
+    async getBoardsbyUserId(@Param('userid') userid: number): Promise<Board[]> {
         const found =  await this.mypageService.getBoardsbyUserID(userid);
 
         return found;

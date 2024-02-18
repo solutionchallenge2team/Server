@@ -1,6 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BoardStatus } from "./board-status.enum";
 import { Reply } from "src/reply/reply.entity";
+import { User } from "src/auth/user.entity";
 
 @Entity()
 export class Board extends BaseEntity{
@@ -25,8 +26,11 @@ export class Board extends BaseEntity{
     @Column()
     status: BoardStatus;//노출기간만료여부
 
-    @Column()
-    userid: number;     //userid
+    // @Column()
+    // userid: number;     //userid
+
+    @ManyToOne(type => User, user=>user.boards)
+    user: User;
 
     @Column({type: 'jsonb', nullable: true})
     replys: string[]; // Reply 엔티티의 배열
