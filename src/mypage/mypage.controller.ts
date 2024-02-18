@@ -42,6 +42,4 @@ export class MypageController {
     updateUserNickname(@Param('userid') userid: number, @Body('nickname') nickname: string): Promise<User>{
         return this.mypageService.updateUserNickname(userid, nickname);
     }
-
-    //유저가 쓴 글 찾기
 }

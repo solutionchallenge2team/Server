@@ -45,17 +45,21 @@ export class BoardsService {
     async updateBoard(boardId: number, newtitle: string, newcontent: string, newlocation: string): Promise<Board>{
         const board = await this.getBoardById(boardId);
 
-        //new 가 "" 이면 기존 값이 유지되도록 바꿔야 함
-        board.title = newtitle;
-        board.content = newcontent;
-        board.location = newlocation;
+        if (newtitle !== undefined && newtitle !== '') {
+            board.title = newtitle;
+        }
+        if (newcontent !== undefined && newcontent !== '') {
+            board.content = newcontent;
+        }
+        if (newlocation !== undefined && newlocation !== '') {
+            board.location = newlocation;
+        }
         await this.boardRepository.save(board);
 
         return board;
     }
 
     //boarId로 Board가져오고 replys배열에 newreply 추가
-    //배열을 바꾸는게 아니라 추가하도록 해야함
     async createBoardReply(boardId: number, newReply: string): Promise<Board>{
         const board = await this.getBoardById(boardId);
 
