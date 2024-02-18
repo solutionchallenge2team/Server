@@ -2,8 +2,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Board } from "./board.entity";
 import { BoardRepository } from "./board.repository";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
-import { Reply } from "src/reply/reply.entity";
-import { ReplaySubject } from "rxjs";
 
 @Injectable()
 export class BoardsService {
@@ -24,7 +22,7 @@ export class BoardsService {
 
         if(!found) {
             throw new NotFoundException(`Can't find Board with boardId ${boardId}`);
-        }
+        }   
         return found;
     }
     
@@ -81,4 +79,13 @@ export class BoardsService {
         return board;
     }
     
+    //TOP10만 가져오기
+    async getTop10Boards(): Promise<Board[]> {
+        return this.boardRepository.find({order: {
+            hearts: 'DESC', // hearts기준 내림차순으로 정렬
+            boardId: 'DESC' // hearts가 같은 경우에는 boardId 기준으로 내림차순 정렬(최근게 보이도록 의도함)
+        },
+        take:10
+    });
+    }
 }

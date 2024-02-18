@@ -54,4 +54,10 @@ export class BoardsController {
     }
 
     
+    //URL을 /:top10 으로 쓰면 위에 있는 @Get('/:boardId') 랑 구분 못한다
+    //이렇게 써도 되려나?
+    @Get('/:top/10')
+    getTop10Boards(){
+        return this.boardsService.getTop10Boards();
+    }
 }
