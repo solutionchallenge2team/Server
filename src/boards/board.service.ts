@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Board } from "./board.entity";
 import { BoardRepository } from "./board.repository";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
+import { Reply } from "src/reply/reply.entity";
+import { ReplaySubject } from "rxjs";
 
 @Injectable()
 export class BoardsService {
@@ -52,10 +54,13 @@ export class BoardsService {
     }
 
     //boarId로 Board가져오고 replys배열에 newreply 추가
+    //배열을 바꾸는게 아니라 추가하도록 해야함
     async createBoardReply(boardId: number, newReply: string): Promise<Board>{
         const board = await this.getBoardById(boardId);
 
-        board.replys = newReply;
+        board.replys = board.replys || [];
+
+        board.replys.push(newReply);
         await this.boardRepository.save(board);
 
         return board;

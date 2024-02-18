@@ -2,6 +2,7 @@ import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch } from 
 import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
+import { Reply } from "src/reply/reply.entity";
 
 @Controller('boards')
 export class BoardsController {
