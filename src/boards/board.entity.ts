@@ -1,7 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BoardStatus } from "./board-status.enum";
 import { Reply } from "src/reply/reply.entity";
-import { User } from "src/auth/user.entity";
+import { User } from "src/user/user.entity";
 import exp from "constants";
 
 @Entity()

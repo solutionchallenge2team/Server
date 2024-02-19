@@ -5,7 +5,7 @@ import { CreateBoardDto } from "../auth/dto/create-board-dto";
 import { v1 as uuid } from "uuid";
 import { BoardStatus } from "./board-status.enum";
 import { userInfo } from "os";
-import { User } from "src/auth/user.entity";
+import { User } from "src/user/user.entity";
 
 @CustomRepository(Board)
 export class BoardRepository extends Repository<Board> {
@@ -19,7 +19,6 @@ export class BoardRepository extends Repository<Board> {
             location,
             hearts:0,
             status:BoardStatus.VALID,
-            // replys: [],
             user,
             replies: []
         });
