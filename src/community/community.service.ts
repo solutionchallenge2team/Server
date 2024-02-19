@@ -9,12 +9,12 @@ export class CommunityService {
         private communityRepository: CommunityRepository,
     ) {}
 
-    createCommunity(createCommunityDto: CreateCommunityDto): Promise<Community>{
-        return this.communityRepository.createCommunity(createCommunityDto);
+    async getAllCommunity(): Promise<Community[]> {
+        return this.communityRepository.find();
     }
 
-    async getAllCommunitiy(): Promise<Community[]> {
-        return this.communityRepository.find();
+    createCommunity(createCommunityDto: CreateCommunityDto): Promise<Community>{
+        return this.communityRepository.createCommunity(createCommunityDto);
     }
 
     async getCommunityById(communityId: number): Promise<Community> {

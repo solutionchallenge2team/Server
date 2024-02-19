@@ -9,7 +9,7 @@ export class CommunityController {
 
     @Get()
     getAllCommunity(): Promise<Community[]> {
-        return this.communityService.getAllCommunitiy();
+        return this.communityService.getAllCommunity();
     }
 
     @Post()

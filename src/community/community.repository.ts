@@ -6,11 +6,11 @@ import { CreateCommunityDto } from "src/auth/dto/create-community-dto";
 @CustomRepository(Community)
 export class CommunityRepository extends Repository<Community> {
     async createCommunity(createCommunityDto: CreateCommunityDto): Promise<Community>{
-        const { communityId, communityName } = createCommunityDto;
+        const { communityName, postsExposurePeriod } = createCommunityDto;
 
         const community = this.create({
-            communityId,
             communityName,
+            postsExposurePeriod,
         });
 
         await this.save(community);
