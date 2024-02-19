@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { Board } from "./board.entity";
 import { BoardRepository } from "./board.repository";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
@@ -6,6 +6,7 @@ import { Reply } from "src/reply/reply.entity";
 import { ReplyRepository } from "src/reply/reply.repository";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { User } from "src/auth/user.entity";
+import { BoardStatus } from "./board-status.enum";
 
 @Injectable()
 export class BoardsService {
@@ -14,12 +15,13 @@ export class BoardsService {
         private replyRepository: ReplyRepository
     ) { }
 
+    //VALID한 게시물 전부 가져오기
     async getAllBoards(): Promise<Board[]> {
-        return this.boardRepository.find({
-            order: {
-                boardId: 'DESC' // 내림차순으로 정렬
-            }
-        });
+        return this.boardRepository
+            .createQueryBuilder('board')
+            .where('board.status = :status', {status: BoardStatus.VALID})
+            .orderBy('board.boardId', 'DESC')
+            .getMany();
     }
 
     //id를 이용해서 게시물 가져오기
@@ -105,7 +107,12 @@ export class BoardsService {
 
     //좋아요 수 1씩 증가하기(Url이 Patch될 때마다 1씩 증가)
     async increaseHearts(boardId: number): Promise<Board> {
+        Logger.verbose(`boardId is ${boardId}`);
+
         const board = await this.boardRepository.findOne({ where: { boardId } });
+
+        Logger.verbose(`found board ${board}`);
+
         if (!board) {
             throw new Error(`Board with ID ${boardId} not found`);
         }
@@ -129,7 +136,7 @@ export class BoardsService {
 
     //TOP10만 가져오기
     async getTop10Boards(): Promise<Board[]> {
-        return this.boardRepository.find({
+        return await this.boardRepository.find({
             order: {
                 hearts: 'DESC', // hearts기준 내림차순으로 정렬
                 boardId: 'DESC' // hearts가 같은 경우에는 boardId 기준으로 내림차순 정렬(최근게 보이도록 의도함)
