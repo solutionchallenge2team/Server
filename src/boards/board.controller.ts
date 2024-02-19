@@ -15,10 +15,12 @@ export class BoardsController {
     constructor(private boardsService: BoardsService){}
     private logger = new Logger('boardsController');
 
-    //VALID한 게시물 전부 가져오기
+    //VALID한 게시물 전부 가져오기(소속된 커뮤니티 내)
     @Get()
-    getAllBoards(): Promise<Board[]> {
-        return this.boardsService.getAllBoards();
+    getAllBoards(
+        @GetUser() user: User
+    ): Promise<Board[]> {
+        return this.boardsService.getAllBoards(user);
     }
 
     //id를 이용해서 게시물 가져오기
@@ -28,7 +30,7 @@ export class BoardsController {
     }
 
 
-    //게시물 생성하기, user 정보 같이 넣어주기
+    //게시물 생성하기, user 정보 같이 넣어주기(user정보 있으니까 community 정보도 존재)
     @Post()
     createBoard(
         @Body() createBoardDto: CreateBoardDto,
@@ -102,9 +104,11 @@ export class BoardsController {
         return this.boardsService.decreaseHearts(boardId);
     }
 
-    //top10
+    //top10(유저가 속한 커뮤니티 내)
     @Get('top/10')
-    getTop10Boards(){
-        return this.boardsService.getTop10Boards();
+    getTop10Boards(
+        @GetUser() user: User,
+    ){
+        return this.boardsService.getTop10Boards(user);
     }
 }

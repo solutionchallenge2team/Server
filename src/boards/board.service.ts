@@ -7,6 +7,7 @@ import { ReplyRepository } from "src/reply/reply.repository";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { User } from "src/user/user.entity";
 import { BoardStatus } from "./board-status.enum";
+import { promises } from "dns";
 
 @Injectable()
 export class BoardsService {
@@ -16,10 +17,13 @@ export class BoardsService {
     ) { }
 
     //VALID한 게시물 전부 가져오기
-    async getAllBoards(): Promise<Board[]> {
+    async getAllBoards(user: User): Promise<Board[]> {
         return this.boardRepository
             .createQueryBuilder('board')
+            .leftJoinAndSelect('board.user', 'user')
+            .leftJoinAndSelect('user.community', 'community')
             .where('board.status = :status', {status: BoardStatus.VALID})
+            .andWhere('community.communityId = :communityId', { communityId: user.community.communityId })
             .orderBy('board.boardId', 'DESC')
             .getMany();
     }
@@ -133,14 +137,28 @@ export class BoardsService {
         return board;
     }
 
-    //TOP10만 가져오기
-    async getTop10Boards(): Promise<Board[]> {
-        return await this.boardRepository.find({
-            order: {
-                hearts: 'DESC', // hearts기준 내림차순으로 정렬
-                boardId: 'DESC' // hearts가 같은 경우에는 boardId 기준으로 내림차순 정렬(최근게 보이도록 의도함)
-            },
-            take: 10
-        });
+    // //TOP10만 가져오기
+    // async getTop10Boards(user: User): Promise<Board[]> {
+    //     return await this.boardRepository.find({
+    //         //board.user.community 가 들어온 user의 community 와 같아야 함.
+    //         order: {
+    //             hearts: 'DESC', // hearts기준 내림차순으로 정렬
+    //             boardId: 'DESC' // hearts가 같은 경우에는 boardId 기준으로 내림차순 정렬(최근게 보이도록 의도함)
+    //         },
+    //         take: 10
+    //     });
+    // }
+
+    //top10
+    async getTop10Boards(user: User): Promise<Board[]>{
+        return this.boardRepository
+            .createQueryBuilder('board')
+            .leftJoin('board.user', 'user')
+            .leftJoin('user.community', 'community')
+            .where('community.communityId = :communityId', {communityId: user.community.communityId})
+            .orderBy('board.hearts', 'DESC')
+            .addOrderBy('board.boardId', 'DESC')
+            .take(10)
+            .getMany();
     }
 }
