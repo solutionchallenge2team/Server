@@ -7,6 +7,7 @@ import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { AuthGuard } from "@nestjs/passport";
 import { GetUser } from "src/auth/get-user.decorator";
 import { User } from "src/auth/user.entity";
+import { repl } from "@nestjs/core";
 
 @Controller('boards')
 @UseGuards(AuthGuard())
@@ -64,9 +65,28 @@ export class BoardsController {
         return this.boardsService.addBoardReply(boardId, createReplyDto);
     }
 
+    //댓글 수정 : replyId 불러와서 replyRepository에서 수정.
+    @Patch('/:boardId/:replyId')
+    async editReply(
+        @Param('boardId') boardId: number,
+        @Param('replyId') replyId: number,
+        @Body('replyContent') replyContent: string,
+    ){
+        return this.boardsService.editReply(replyId, replyContent);
+    }
+
+    //댓글 삭제
+    @Delete('/:boardId/:replyId')
+    async deleteReply(
+        @Param('boardId') boardId: number,
+        @Param('replyId') replyId: number,
+    ){
+        return this.boardsService.deleteReply(replyId);
+    }
+
     @Patch('/:boardId/increaseHearts')
     increaseHearts(
-        @Param('boardId') boardId,
+        @Param('boardId') boardId: number,
     ){
         return this.boardsService.increaseHearts(boardId);
     }

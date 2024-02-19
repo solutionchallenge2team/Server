@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
         BoardsModule,
         MypageModule,
         CommunityModule,
-        AuthModule
+        AuthModule,
     ],
 })
 export class AppModule {}
