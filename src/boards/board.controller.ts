@@ -36,19 +36,23 @@ export class BoardsController {
 
     //게시물 삭제하기
     @Delete('/:boardId')
-    deleteBoard(@Param('boardId', ParseIntPipe) id): Promise<void> {
-        return this.boardsService.deleteBoard(id);
+    deleteBoard(
+        @Param('boardId', ParseIntPipe) boardId: number,
+        @GetUser() user: User, //삭제 권한 추가
+        ): Promise<void> {
+        return this.boardsService.deleteBoard(boardId, user);
     }
 
-    //게시물 title, description 바꾸기
+    //게시물 title, description, location 수정
     @Patch('/:boardId')
     updateBoard(
         @Param('boardId', ParseIntPipe) boardId,
         @Body('newtitle') newtitle: string, 
         @Body('newcontent') newcontent:string,
-        @Body('newlocation') newlocation:string
+        @Body('newlocation') newlocation:string,
+        @GetUser() user: User,
     ): Promise<Board>{
-        return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation);
+        return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation, user);
     }
 
     //boarId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가

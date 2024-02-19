@@ -38,18 +38,19 @@ export class BoardsService {
     }
 
     //게시물 삭제하기
-    async deleteBoard(boardId: number): Promise<void> {
-        //삭제 권한 추가해야함
-        const result = await this.boardRepository.delete(boardId);
+    async deleteBoard(boardId: number, user: User): Promise<void> {
+        //삭제 권한 추가함.
+        const result = await this.boardRepository.delete({boardId, user});
 
         if (result.affected === 0) {
             throw new NotFoundException(`Can't find board with boardId ${boardId}`);
         }
     }
 
-    //게시물 title, description 바꾸기
-    async updateBoard(boardId: number, newtitle: string, newcontent: string, newlocation: string): Promise<Board> {
-        const board = await this.getBoardById(boardId);
+    //게시물 title, description, location 수정
+    async updateBoard(boardId: number, newtitle: string, newcontent: string, newlocation: string, user: User): Promise<Board> {
+        // const board = await this.getBoardById(boardId);
+        const board = await this.boardRepository.findOne({where: {boardId, user}}); //수정 권한 추가
 
         if (newtitle !== undefined && newtitle !== '') {
             board.title = newtitle;
