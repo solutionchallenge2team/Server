@@ -1,9 +1,10 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNumber } from "class-validator";
 
 export class CreateCommunityDto {
     @IsNotEmpty()
-    communityId: number;
+    communityName: string;
 
     @IsNotEmpty()
-    communityName: string;
+    @IsNumber()
+    postsExposurePeriod: number;
 }
