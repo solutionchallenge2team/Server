@@ -1,11 +1,15 @@
-import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch } from "@nestjs/common";
+import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch, UseGuards } from "@nestjs/common";
 import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
 import { Reply } from "src/reply/reply.entity";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
+import { AuthGuard } from "@nestjs/passport";
+import { GetUser } from "src/auth/get-user.decorator";
+import { User } from "src/auth/user.entity";
 
 @Controller('boards')
+@UseGuards(AuthGuard())
 export class BoardsController {
     constructor(private boardsService: BoardsService){}
 
@@ -20,10 +24,14 @@ export class BoardsController {
         return this.boardsService.getBoardById(boardId);
     }
 
+
     //게시물 생성하기, user 자동으로 같이 저장되어야 한다.
     @Post()
-    createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
-        return this.boardsService.createBoard(createBoardDto);
+    createBoard(
+        @Body() createBoardDto: CreateBoardDto,
+        @GetUser() user: User
+        ): Promise<Board> {
+        return this.boardsService.createBoard(createBoardDto, user);
     }
 
     //게시물 삭제하기
