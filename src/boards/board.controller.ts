@@ -55,8 +55,8 @@ export class BoardsController {
         return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation, user);
     }
 
-    //boarId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가
-    @Patch('/:boardId/newReply')
+    //boardId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가
+    @Post('/:boardId/newReply')
     async addBoardReply(
         @Param('boardId', ParseIntPipe) boardId: number,
         @Body() createReplyDto: CreateReplyDto

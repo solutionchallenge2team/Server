@@ -32,9 +32,9 @@ export class Board extends BaseEntity{
     @ManyToOne(type => User, user=>user.boards)
     user: User;
 
-    @Column({type: 'jsonb', nullable: true})
-    replys: string[]; // Reply 엔티티의 배열
+    // @Column({type: 'jsonb', nullable: true})
+    // replys: string[]; // Reply 엔티티의 배열
     
-    @OneToMany(() => Reply, reply => reply.board)
+    @OneToMany(() => Reply, reply => reply.board, {eager: true})
     replies: Reply[]; // Board 엔티티에 Reply 엔티티의 배열을 정의합니다.
 }

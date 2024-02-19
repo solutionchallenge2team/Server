@@ -19,8 +19,9 @@ export class BoardRepository extends Repository<Board> {
             location,
             hearts:0,
             status:BoardStatus.VALID,
-            replys: [],
+            // replys: [],
             user,
+            replies: []
         });
 
         await this.save(board);

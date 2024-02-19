@@ -76,12 +76,13 @@ export class BoardsService {
             board.replies = [];
         }
 
-        const newReply = await this.replyRepository.createReply(createReplyDto);
+        // const newReply = await this.replyRepository.createReply(createReplyDto, board);
+        await this.replyRepository.createReply(createReplyDto, board);
 
-        board.replies.push(newReply);
+        // board.replies.push(newReply);
 
         // await this.replyRepository.save(newReply);   //repository에서 이미 save 하니까.
-        await this.boardRepository.save(board);
+        // await this.boardRepository.save(board);
     }
 
 
