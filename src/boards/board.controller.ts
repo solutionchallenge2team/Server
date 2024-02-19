@@ -6,7 +6,7 @@ import { Reply } from "src/reply/reply.entity";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { AuthGuard } from "@nestjs/passport";
 import { GetUser } from "src/auth/get-user.decorator";
-import { User } from "src/auth/user.entity";
+import { User } from "src/user/user.entity";
 import { repl } from "@nestjs/core";
 
 @Controller('boards')

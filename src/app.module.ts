@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { typeORMConfig } from "./configs/typeorm.config";
 import { BoardsModule } from "./boards/boards.module";
-import { MypageModule } from './mypage/mypage.module';
+import { UserModule } from './user/user.module';
 import { CommunityModule } from './community/community.module';
 import { AuthModule } from './auth/auth.module';
 
@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
     imports: [
         TypeOrmModule.forRoot(typeORMConfig),
         BoardsModule,
-        MypageModule,
+        UserModule,
         CommunityModule,
         AuthModule,
     ],

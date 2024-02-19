@@ -5,7 +5,7 @@ import { CreateBoardDto } from "../auth/dto/create-board-dto";
 import { Reply } from "src/reply/reply.entity";
 import { ReplyRepository } from "src/reply/reply.repository";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
-import { User } from "src/auth/user.entity";
+import { User } from "src/user/user.entity";
 import { BoardStatus } from "./board-status.enum";
 
 @Injectable()
@@ -51,7 +51,6 @@ export class BoardsService {
 
     //게시물 title, description, location 수정
     async updateBoard(boardId: number, newtitle: string, newcontent: string, newlocation: string, user: User): Promise<Board> {
-        // const board = await this.getBoardById(boardId);
         const board = await this.boardRepository.findOne({where: {boardId, user}}); //수정 권한 추가
 
         if (newtitle !== undefined && newtitle !== '') {

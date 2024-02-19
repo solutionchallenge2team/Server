@@ -2,6 +2,7 @@ import { CustomRepository } from "src/db/typeorm-ex.decorator";
 import { Repository } from "typeorm";
 import { Community } from "./community.entity";
 import { CreateCommunityDto } from "src/auth/dto/create-community-dto";
+import { Injectable } from "@nestjs/common";
 
 @CustomRepository(Community)
 export class CommunityRepository extends Repository<Community> {
