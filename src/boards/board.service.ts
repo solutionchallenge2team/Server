@@ -5,6 +5,7 @@ import { CreateBoardDto } from "../auth/dto/create-board-dto";
 import { Reply } from "src/reply/reply.entity";
 import { ReplyRepository } from "src/reply/reply.repository";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
+import { User } from "src/auth/user.entity";
 
 @Injectable()
 export class BoardsService {
@@ -32,8 +33,8 @@ export class BoardsService {
     }
 
     //게시물 생성하기, userid는 입력이 아니라 자동으로 가져와야 한다. 
-    createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-        return this.boardRepository.createBoard(createBoardDto);
+    createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {
+        return this.boardRepository.createBoard(createBoardDto, user);
     }
 
     //게시물 삭제하기

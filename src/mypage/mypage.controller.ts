@@ -31,11 +31,11 @@ export class MypageController {
         return this.mypageService.createUser(createuserDto);
     }
 
-    //보드 생성하기
-    @Post()
-    createUserBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board>{
-        return this.mypageService.createUserBoard(CreateBoardDto);
-    }
+    // //보드 생성하기
+    // @Post()
+    // createUserBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board>{
+    //     return this.mypageService.createUserBoard(CreateBoardDto);
+    // }
 
     //닉네임 수정
     @Patch('/:userid')

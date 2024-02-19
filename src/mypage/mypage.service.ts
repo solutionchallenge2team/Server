@@ -26,10 +26,10 @@ export class MypageService {
         return this.userRepository.createUser(createuserDto);
     }
 
-    //board를 user에서 만들도록 하는게 나을듯
-    createUserBoard(createBoardDto: CreateBoardDto): Promise<Board>{
-        return this.boardRepository.createBoard(createBoardDto);
-    }
+    // //board를 user에서 만들도록 하는게 나을듯
+    // createUserBoard(createBoardDto: CreateBoardDto): Promise<Board>{
+    //     return this.boardRepository.createBoard(createBoardDto);
+    // }
 
     //UserID로 유저 찾기
     async getUserByUserID(userid: number): Promise<User> {

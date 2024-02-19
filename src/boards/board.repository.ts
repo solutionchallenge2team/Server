@@ -10,7 +10,7 @@ import { User } from "src/auth/user.entity";
 @CustomRepository(Board)
 export class BoardRepository extends Repository<Board> {
     
-    async createBoard(createBoardDto: CreateBoardDto): Promise<Board>{
+    async createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board>{
         const { title, content, location} = createBoardDto;
 
         const board = this.create({
@@ -20,6 +20,7 @@ export class BoardRepository extends Repository<Board> {
             hearts:0,
             status:BoardStatus.VALID,
             replys: [],
+            user,
         });
 
         await this.save(board);
