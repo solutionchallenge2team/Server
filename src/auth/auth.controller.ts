@@ -1,13 +1,16 @@
-import { Body, Controller, Logger, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Logger, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user-dto';
-import { User } from './user.entity';
+import { User } from '../user/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
+import { Community } from 'src/community/community.entity';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService){}
+    constructor(
+        private authService: AuthService,
+        ){}
     private logger = new Logger('AuthController');
 
     //회원가입
@@ -21,11 +24,5 @@ export class AuthController {
     @Post('/signin')
     signIn(@Body() createUserDto: CreateUserDto): Promise<{accessToken: string}> { 
         return this.authService.signIn(createUserDto);
-    }
-
-    @Post('/test')
-    @UseGuards(AuthGuard())
-    test(@GetUser() user: User){
-        console.log('user', user);
     }
 }
