@@ -7,6 +7,8 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import {CommunityRepository} from 'src/community/community.repository';
 import {Community} from 'src/community/community.entity'
+import { CommunityService } from 'src/community/community.service';
+import { CommunityController } from 'src/community/community.controller';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +16,8 @@ export class AuthService {
         @InjectRepository(UserRepository)
         private userRepository: UserRepository,
         private jwtService: JwtService,
-        private communityRepository: CommunityRepository
+        private communityRepository: CommunityRepository,
+        private communityController: CommunityController,
     ) {}
     private logger = new Logger('AuthService');
 
@@ -29,8 +32,6 @@ export class AuthService {
         return user;
     }
 
-
-
     //로그인 -> community 정보 없으면 선택하도록.
     async signIn(createUserDto: CreateUserDto): Promise<{accessToken: string}> {
         const {nickname, password} = createUserDto;
@@ -39,6 +40,7 @@ export class AuthService {
         if(user && (await bcrypt.compare(password, user.password))){
             const payload = {nickname};
             const accessToken = await this.jwtService.sign(payload);
+
             return {accessToken};
         } else {
             throw new UnauthorizedException('login failed');
