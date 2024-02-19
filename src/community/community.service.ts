@@ -2,11 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCommunityDto } from 'src/auth/dto/create-community-dto';
 import { Community } from './community.entity';
 import { CommunityRepository } from './community.repository';
+import { User } from 'src/user/user.entity';
+import { UserRepository } from 'src/user/user.repository';
 
 @Injectable()
 export class CommunityService {
     constructor(
         private communityRepository: CommunityRepository,
+        private userRepository: UserRepository,
     ) {}
 
     async getAllCommunity(): Promise<Community[]> {
@@ -14,6 +17,7 @@ export class CommunityService {
     }
 
     createCommunity(createCommunityDto: CreateCommunityDto): Promise<Community>{
+        
         return this.communityRepository.createCommunity(createCommunityDto);
     }
 
@@ -31,7 +35,14 @@ export class CommunityService {
         if(!found){
             throw new NotFoundException(`Can't find Community with communityName ${communityName}`);
         }
+
         return found;
+    }
+
+    //user 정보에 community 저장
+    async addCommunity(community: Community, user: User): Promise<void>{
+        user.community = community;
+        await this.userRepository.save(user);
     }
 
 }

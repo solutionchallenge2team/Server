@@ -5,6 +5,7 @@ import { User } from '../user/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
 import { Community } from 'src/community/community.entity';
+import { get } from 'http';
 
 @Controller('auth')
 export class AuthController {
