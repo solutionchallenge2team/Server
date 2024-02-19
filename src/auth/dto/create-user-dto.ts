@@ -1,8 +1,15 @@
+import { InjectRepository } from "@nestjs/typeorm";
 import { IsNotEmpty } from "class-validator";
-import { UserLevel } from "src/mypage/userlevel.enum";
+import { Community } from "src/community/community.entity";
+import { CommunityRepository } from "src/community/community.repository";
+import { UserLevel } from "src/user/userlevel.enum";
 
 export class CreateUserDto {
-    @IsNotEmpty()
+    constructor(
+        private communityRepository: CommunityRepository
+    ){}
+
+    @IsNotEmpty() 
     nickname: string;    //닉네임
 
     @IsNotEmpty()        
@@ -14,7 +21,6 @@ export class CreateUserDto {
     @IsNotEmpty()        
     userLevel: UserLevel;   //MEMBER OR MANAGER
 
-    @IsNotEmpty()        
-    community: string;   //속한 공동체
-
+    @IsNotEmpty()
+    communityName: string;   //속한 공동체
 }

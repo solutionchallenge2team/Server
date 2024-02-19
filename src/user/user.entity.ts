@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { UserLevel } from "../mypage/userlevel.enum";
+import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { UserLevel } from "./userlevel.enum";
 import { Board } from "src/boards/board.entity";
+import { Community } from "src/community/community.entity";
 
 @Entity()
 @Unique(['nickname'])
@@ -20,10 +21,9 @@ export class User extends BaseEntity{
     @Column()
     userLevel: UserLevel;
 
-    @Column()
-    community: string;
-
     @OneToMany(type => Board, board => board.user)
     boards: Board[];
-    // //유저가 작성한 글을 엔티티에 리스트로 포함시켜야한다. 
+
+    @ManyToOne(type=> Community, community => community.user)
+    community: Community;
 }
