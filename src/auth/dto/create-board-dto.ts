@@ -11,6 +11,4 @@ export class CreateBoardDto {
     //@IsNotEmpty()        
     location: string;   //위치
 
-    // //@IsNotEmpty()
-    // userid: number;
 }
