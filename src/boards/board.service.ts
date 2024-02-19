@@ -76,16 +76,32 @@ export class BoardsService {
             board.replies = [];
         }
 
-        // const newReply = await this.replyRepository.createReply(createReplyDto, board);
         await this.replyRepository.createReply(createReplyDto, board);
-
-        // board.replies.push(newReply);
-
-        // await this.replyRepository.save(newReply);   //repository에서 이미 save 하니까.
-        // await this.boardRepository.save(board);
     }
 
+    //댓글 삭제
+    async deleteReply(replyId: number): Promise<void> {
+        await this.replyRepository.delete(replyId);
+    }
 
+    //id를 이용해서 댓글 가져오기
+    async getReplyById(replyId: number): Promise<Reply> {
+        const found = await this.replyRepository.findOne({where: {replyId}});
+
+        if(!found) {
+            throw new NotFoundException(`Can't find Reply with replyId ${replyId}`);
+        }
+        return found;
+    }
+
+    //id를 이용해서 댓글 수정하기
+    async editReply(replyId: number, replyContent: string):Promise<void> {
+        const reply = await this.getReplyById(replyId);
+
+        reply.replyContent = replyContent;
+
+        await this.replyRepository.save(reply);
+    }
 
     //좋아요 수 1씩 증가하기(Url이 Patch될 때마다 1씩 증가)
     async increaseHearts(boardId: number): Promise<Board> {
