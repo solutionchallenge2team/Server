@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch, UseGuards, Logger } from "@nestjs/common";
 import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
@@ -13,7 +13,9 @@ import { repl } from "@nestjs/core";
 @UseGuards(AuthGuard())
 export class BoardsController {
     constructor(private boardsService: BoardsService){}
+    private logger = new Logger('boardsController');
 
+    //VALID한 게시물 전부 가져오기
     @Get()
     getAllBoards(): Promise<Board[]> {
         return this.boardsService.getAllBoards();
@@ -84,22 +86,24 @@ export class BoardsController {
         return this.boardsService.deleteReply(replyId);
     }
 
-    @Patch('/:boardId/increaseHearts')
-    increaseHearts(
+    //하트 개수 증가
+    @Post('/:boardId/increaseHearts')
+    async increaseHearts(
         @Param('boardId') boardId: number,
     ){
         return this.boardsService.increaseHearts(boardId);
     }
 
-    @Patch('/:boardId/decreaseHearts')
+    //하트 개수 감소
+    @Post('/:boardId/decreaseHearts')
     decreaseHearts(
-        @Param('boardId') boardId,
+        @Param('boardId') boardId:number,
     ){
         return this.boardsService.decreaseHearts(boardId);
     }
 
-
-    @Get('/top10')
+    //top10
+    @Get('top/10')
     getTop10Boards(){
         return this.boardsService.getTop10Boards();
     }
