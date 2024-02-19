@@ -19,7 +19,7 @@ export class AuthController {
 
     //로그인
     @Post('/signin')
-    signIn(@Body() createUserDto: CreateUserDto): Promise<{accessToken: string}> { //여기에 createUser가 왜 있지????? 
+    signIn(@Body() createUserDto: CreateUserDto): Promise<{accessToken: string}> { 
         return this.authService.signIn(createUserDto);
     }
 

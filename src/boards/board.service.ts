@@ -32,7 +32,7 @@ export class BoardsService {
         return found;
     }
 
-    //게시물 생성하기, userid는 입력이 아니라 자동으로 가져와야 한다. 
+    //게시물 생성하기, user 정보 같이 넣어주기 
     createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {
         return this.boardRepository.createBoard(createBoardDto, user);
     }
