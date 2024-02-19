@@ -9,33 +9,21 @@ import { CreateBoardDto } from 'src/auth/dto/create-board-dto';
 export class MypageController {
     constructor(private mypageService: MypageService){}
 
-    //userid로 유저가 작성한 글 get
+    //userid로 유저 정보 가져오기
+    @Get('/:userid')
+    async getUserByUserID(@Param('userid') userid: number): Promise<User> {
+        const found = await this.mypageService.getUserByUserID(userid);
+    
+        return found;
+    }
+
+    //userid로 유저가 작성한 글 가져오기
     @Get('/:userid/boards')
     async getBoardsbyUserId(@Param('userid') userid: number): Promise<Board[]> {
         const found =  await this.mypageService.getBoardsbyUserID(userid);
 
         return found;
     }
-
-    //userid로 유저 정보 get
-    @Get('/:userid')
-    async getUserByID(@Param('userid') userid: number): Promise<User> {
-        const found = await this.mypageService.getUserByUserID(userid);
-
-        return found;
-    }
-
-    //유저 생성하기
-    @Post()
-    createUser(@Body() createuserDto: CreateUserDto): Promise<User> {
-        return this.mypageService.createUser(createuserDto);
-    }
-
-    // //보드 생성하기
-    // @Post()
-    // createUserBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board>{
-    //     return this.mypageService.createUserBoard(CreateBoardDto);
-    // }
 
     //닉네임 수정
     @Patch('/:userid')

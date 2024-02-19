@@ -13,25 +13,7 @@ export class MypageService {
         private userRepository: UserRepository,
     ) {} 
 
-    //userid를 가진 board 배열 
-    async getBoardsbyUserID(userid: number): Promise<Board[]> {
-        // return this.userRepository.find({where: {userid}});
-        // 저녀석은 User[]를 return 한다.
-        const user = await this.userRepository.findOne({where: {userid}})
-        return await this.boardRepository.find({where: {user}})
-    }
-
-    //user 생성해서 userRepository에 저장
-    createUser(createuserDto: CreateUserDto): Promise<User>{
-        return this.userRepository.createUser(createuserDto);
-    }
-
-    // //board를 user에서 만들도록 하는게 나을듯
-    // createUserBoard(createBoardDto: CreateBoardDto): Promise<Board>{
-    //     return this.boardRepository.createBoard(createBoardDto);
-    // }
-
-    //UserID로 유저 찾기
+    //UserID로 유저 정보 가져오기
     async getUserByUserID(userid: number): Promise<User> {
         const found = await this.userRepository.findOne({where:{userid}});
 
@@ -41,7 +23,13 @@ export class MypageService {
         return found;
     }
 
-    //유저의 닉네임 바꾸기
+    //userid로 유저가 작성한 글 가져오기
+    async getBoardsbyUserID(userid: number): Promise<Board[]> {
+        const user = await this.userRepository.findOne({where: {userid}})
+        return await this.boardRepository.find({where: {user}})
+    }
+
+    //닉네임 수정
     async updateUserNickname(userid: number, nickname: string): Promise<User>{
         const user = await this.getUserByUserID(userid);
 

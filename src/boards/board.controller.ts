@@ -25,7 +25,7 @@ export class BoardsController {
     }
 
 
-    //게시물 생성하기, user 자동으로 같이 저장되어야 한다.
+    //게시물 생성하기, user 정보 같이 넣어주기
     @Post()
     createBoard(
         @Body() createBoardDto: CreateBoardDto,
