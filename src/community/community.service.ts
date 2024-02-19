@@ -26,4 +26,12 @@ export class CommunityService {
         return found;
     }
 
+    async findCommunity(communityName: string): Promise<Community>{
+        const found = await this.communityRepository.findOne({where: {communityName}});
+        if(!found){
+            throw new NotFoundException(`Can't find Community with communityName ${communityName}`);
+        }
+        return found;
+    }
+
 }

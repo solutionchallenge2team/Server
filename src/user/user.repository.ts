@@ -14,7 +14,7 @@ import { Community } from "src/community/community.entity";
 export class UserRepository extends Repository<User>{
     private logger = new Logger('UserRepository');
 
-    async createUser(createUserDto: CreateUserDto, community: Community): Promise<User>{
+    async createUser(createUserDto: CreateUserDto): Promise<User>{
         this.logger.verbose(`${JSON.stringify(createUserDto)} got in to repository`);
  
         const { nickname, email, password, userLevel} = createUserDto;
@@ -29,7 +29,6 @@ export class UserRepository extends Repository<User>{
             email,
             password: hashedPassword,
             userLevel,
-            community: community,
         });
 
         this.logger.verbose(`${user.nickname} user is created`);

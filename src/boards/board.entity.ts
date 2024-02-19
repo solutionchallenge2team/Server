@@ -36,8 +36,7 @@ export class Board extends BaseEntity{
     async updateStatus() {
         const now = new Date();
         const expirationDate = new Date(this.date);
-        expirationDate.setDate(expirationDate.getDate() + 1)   //1을 exposure period로 설정해야 함
-        //1일 후에 이것들 바뀌었는지 확인해보기. 
+        expirationDate.setDate(expirationDate.getDate() + this.user.community.postsExposurePeriod);
 
         if (now > expirationDate){
             this.status = BoardStatus.EXPIRED;
