@@ -21,6 +21,6 @@ export class CreateUserDto {
     @IsNotEmpty()        
     userLevel: UserLevel;   //MEMBER OR MANAGER
 
-    @IsNotEmpty()
-    communityName: string;   //속한 공동체
+    // @IsNotEmpty()
+    // communityName: string;   //속한 공동체
 }

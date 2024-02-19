@@ -22,4 +22,12 @@ export class CommunityController {
         return this.communityService.getCommunityById(communityId);
     }
 
+    //이름으로 커뮤니티 찾고 그 커뮤니티를 유저 정보에 저장하기
+    @Get('find/:communityName')
+    findCommunity(
+        @Param('communityName') communityName: string
+    ){
+        return this.communityService.findCommunity(communityName);
+    }
+
 }
