@@ -1,13 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, UseGuards } from '@nestjs/common';
 import { CreateCommunityDto } from 'src/auth/dto/create-community-dto';
 import { Community } from './community.entity';
 import { CommunityService } from "./community.service";
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/user/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('community')
 export class CommunityController {
     constructor(private communityService: CommunityService){}
+    private logger = new Logger('CommunityController');
 
     @Get()
     getAllCommunity(): Promise<Community[]> {
@@ -16,13 +18,17 @@ export class CommunityController {
 
     //커뮤니티 생성하고 그 커뮤니티를 유저 정보에 저장
     @Post()
+    @UseGuards(AuthGuard())   //실험 성공!!
     async createCommunity(
         @Body() createCommunityDto: CreateCommunityDto,
         @GetUser() user: User,
     ): Promise<Community> {
-        const community = await this.communityService.createCommunity(createCommunityDto);
-        this.communityService.addCommunity(community, user);
-        return community;
+        this.logger.verbose(`${JSON.stringify(createCommunityDto)} got into createCommunity`);
+
+        const found = await this.communityService.createCommunity(createCommunityDto);
+        this.logger.verbose(`${JSON.stringify(found)} got in to community`);
+        this.communityService.addCommunity(found, user);
+        return found;
     }
 
     @Get('/:communityId')
@@ -32,6 +38,7 @@ export class CommunityController {
 
     //이름으로 커뮤니티 찾고 그 커뮤니티를 유저 정보에 저장하기
     @Get('find/:communityName')
+    @UseGuards(AuthGuard())   //실험 성공!!
     async findCommunity(
         @Param('communityName') communityName: string,
         @GetUser() user: User   //user 정보 같이 불러와야 함.

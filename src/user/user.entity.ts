@@ -24,6 +24,6 @@ export class User extends BaseEntity{
     @OneToMany(type => Board, board => board.user)
     boards: Board[];
 
-    @ManyToOne(type=> Community, community => community.user)
+    @ManyToOne(type=> Community, community => community.user, {eager: true})
     community: Community;
 }
