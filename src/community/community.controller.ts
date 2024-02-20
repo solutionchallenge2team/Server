@@ -21,7 +21,7 @@ export class CommunityController {
         @GetUser() user: User,
     ): Promise<Community> {
         const community = await this.communityService.createCommunity(createCommunityDto);
-        await this.communityService.addCommunity(community, user);
+        this.communityService.addCommunity(community, user);
         return community;
     }
 

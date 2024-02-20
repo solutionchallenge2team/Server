@@ -48,16 +48,17 @@ export class BoardsController {
         return this.boardsService.deleteBoard(boardId, user);
     }
 
-    //게시물 title, description, location 수정
+    //게시물 title, description, location, photos 수정
     @Patch('/:boardId')
     updateBoard(
         @Param('boardId', ParseIntPipe) boardId,
-        @Body('newtitle') newtitle: string, 
-        @Body('newcontent') newcontent:string,
-        @Body('newlocation') newlocation:string,
+        @Body('title') title: string, 
+        @Body('content') content:string,
+        @Body('location') location:string,
+        @Body('photos') photos: string[],
         @GetUser() user: User,
     ): Promise<Board>{
-        return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation, user);
+        return this.boardsService.updateBoard(boardId, title, content, location, photos, user);
     }
 
     //boardId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가

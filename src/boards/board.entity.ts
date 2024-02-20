@@ -21,7 +21,16 @@ export class Board extends BaseEntity{
     @Column()           
     location: string;   //위치
 
-    @Column()
+    // @Column()
+    // photos: string[];
+
+    // @Column({array: true})
+    // photos: string[];
+
+    // @Column("string", {array: true})
+    // photos: string[];
+
+    @Column("text", {array: true})
     photos: string[];
 
     @CreateDateColumn()
