@@ -8,6 +8,7 @@ import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { User } from "src/user/user.entity";
 import { BoardStatus } from "./board-status.enum";
 import { promises } from "dns";
+import { ReplOptions } from "repl";
 
 @Injectable()
 export class BoardsService {
@@ -77,14 +78,15 @@ export class BoardsService {
 
 
     //boarId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가
-    async addBoardReply(boardId: number, createReplyDto: CreateReplyDto): Promise<void> {
+    async addBoardReply(boardId: number, createReplyDto: CreateReplyDto): Promise<string> {
         const board = await this.getBoardById(boardId);
 
         if (!board.replies) {
             board.replies = [];
         }
 
-        await this.replyRepository.createReply(createReplyDto, board);
+        const made = await this.replyRepository.createReply(createReplyDto, board);
+        return made.replyContent;
     }
 
     //댓글 삭제
