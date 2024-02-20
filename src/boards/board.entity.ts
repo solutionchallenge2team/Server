@@ -21,15 +21,6 @@ export class Board extends BaseEntity{
     @Column()           
     location: string;   //위치
 
-    // @Column()
-    // photos: string[];
-
-    // @Column({array: true})
-    // photos: string[];
-
-    // @Column("string", {array: true})
-    // photos: string[];
-
     @Column("text", {array: true})
     photos: string[];
 
@@ -39,7 +30,7 @@ export class Board extends BaseEntity{
     @Column()
     status: BoardStatus;//노출기간만료여부
 
-    @ManyToOne(type => User, user=>user.boards)
+    @ManyToOne(type => User, user=>user.boards, {eager: true})
     user: User;
 
     @OneToMany(() => Reply, reply => reply.board, {eager: true})

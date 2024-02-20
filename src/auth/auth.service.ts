@@ -31,7 +31,7 @@ export class AuthService {
         return user;
     }
 
-    //로그인 -> community 정보 없으면 선택하도록.
+    //로그인
     async signIn(createUserDto: CreateUserDto): Promise<{accessToken: string}> {
         const {nickname, password} = createUserDto;
         const user = await this.userRepository.findOne({where: {nickname}});
