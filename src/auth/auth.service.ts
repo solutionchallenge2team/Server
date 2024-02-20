@@ -17,7 +17,6 @@ export class AuthService {
         private userRepository: UserRepository,
         private jwtService: JwtService,
         private communityRepository: CommunityRepository,
-        private communityController: CommunityController,
     ) {}
     private logger = new Logger('AuthService');
 

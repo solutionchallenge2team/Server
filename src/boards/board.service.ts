@@ -53,18 +53,21 @@ export class BoardsService {
         }
     }
 
-    //게시물 title, description, location 수정
-    async updateBoard(boardId: number, newtitle: string, newcontent: string, newlocation: string, user: User): Promise<Board> {
+    //게시물 title, description, location, photos 수정
+    async updateBoard(boardId: number, title: string, content: string, location: string, photos: string[], user: User): Promise<Board> {
         const board = await this.boardRepository.findOne({where: {boardId, user}}); //수정 권한 추가
 
-        if (newtitle !== undefined && newtitle !== '') {
-            board.title = newtitle;
+        if (title !== undefined && title !== '') {
+            board.title = title;
         }
-        if (newcontent !== undefined && newcontent !== '') {
-            board.content = newcontent;
+        if (content !== undefined && content !== '') {
+            board.content = content;
         }
-        if (newlocation !== undefined && newlocation !== '') {
-            board.location = newlocation;
+        if (location !== undefined && location !== '') {
+            board.location = location;
+        }
+        if (photos !== undefined) {
+            board.photos = photos;
         }
         await this.boardRepository.save(board);
 

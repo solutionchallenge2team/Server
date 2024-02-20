@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsArray, IsNotEmpty } from "class-validator";
 import { Reply } from "src/reply/reply.entity";
 
 export class CreateBoardDto {
@@ -11,5 +11,6 @@ export class CreateBoardDto {
     @IsNotEmpty()        
     location: string;   //위치
 
+    @IsNotEmpty()
     photos: string[];
 }
