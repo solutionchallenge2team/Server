@@ -21,13 +21,16 @@ export class Board extends BaseEntity{
     @Column()           
     location: string;   //위치
 
+    @Column("text", {array: true})
+    photos: string[];
+
     @CreateDateColumn()
     date: Date;         //날짜
 
     @Column()
     status: BoardStatus;//노출기간만료여부
 
-    @ManyToOne(type => User, user=>user.boards)
+    @ManyToOne(type => User, user=>user.boards, {eager: true})
     user: User;
 
     @OneToMany(() => Reply, reply => reply.board, {eager: true})

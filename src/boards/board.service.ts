@@ -7,6 +7,8 @@ import { ReplyRepository } from "src/reply/reply.repository";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { User } from "src/user/user.entity";
 import { BoardStatus } from "./board-status.enum";
+import { promises } from "dns";
+import { ReplOptions } from "repl";
 
 @Injectable()
 export class BoardsService {
@@ -16,10 +18,13 @@ export class BoardsService {
     ) { }
 
     //VALID한 게시물 전부 가져오기
-    async getAllBoards(): Promise<Board[]> {
+    async getAllBoards(user: User): Promise<Board[]> {
         return this.boardRepository
             .createQueryBuilder('board')
+            .leftJoinAndSelect('board.user', 'user')
+            .leftJoinAndSelect('user.community', 'community')
             .where('board.status = :status', {status: BoardStatus.VALID})
+            .andWhere('community.communityId = :communityId', { communityId: user.community.communityId })
             .orderBy('board.boardId', 'DESC')
             .getMany();
     }
@@ -49,18 +54,21 @@ export class BoardsService {
         }
     }
 
-    //게시물 title, description, location 수정
-    async updateBoard(boardId: number, newtitle: string, newcontent: string, newlocation: string, user: User): Promise<Board> {
+    //게시물 title, description, location, photos 수정
+    async updateBoard(boardId: number, title: string, content: string, location: string, photos: string[], user: User): Promise<Board> {
         const board = await this.boardRepository.findOne({where: {boardId, user}}); //수정 권한 추가
 
-        if (newtitle !== undefined && newtitle !== '') {
-            board.title = newtitle;
+        if (title !== undefined && title !== '') {
+            board.title = title;
         }
-        if (newcontent !== undefined && newcontent !== '') {
-            board.content = newcontent;
+        if (content !== undefined && content !== '') {
+            board.content = content;
         }
-        if (newlocation !== undefined && newlocation !== '') {
-            board.location = newlocation;
+        if (location !== undefined && location !== '') {
+            board.location = location;
+        }
+        if (photos !== undefined) {
+            board.photos = photos;
         }
         await this.boardRepository.save(board);
 
@@ -70,14 +78,15 @@ export class BoardsService {
 
 
     //boarId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가
-    async addBoardReply(boardId: number, createReplyDto: CreateReplyDto): Promise<void> {
+    async addBoardReply(boardId: number, createReplyDto: CreateReplyDto): Promise<string> {
         const board = await this.getBoardById(boardId);
 
         if (!board.replies) {
             board.replies = [];
         }
 
-        await this.replyRepository.createReply(createReplyDto, board);
+        const made = await this.replyRepository.createReply(createReplyDto, board);
+        return made.replyContent;
     }
 
     //댓글 삭제
@@ -133,14 +142,28 @@ export class BoardsService {
         return board;
     }
 
-    //TOP10만 가져오기
-    async getTop10Boards(): Promise<Board[]> {
-        return await this.boardRepository.find({
-            order: {
-                hearts: 'DESC', // hearts기준 내림차순으로 정렬
-                boardId: 'DESC' // hearts가 같은 경우에는 boardId 기준으로 내림차순 정렬(최근게 보이도록 의도함)
-            },
-            take: 10
-        });
+    // //TOP10만 가져오기
+    // async getTop10Boards(user: User): Promise<Board[]> {
+    //     return await this.boardRepository.find({
+    //         //board.user.community 가 들어온 user의 community 와 같아야 함.
+    //         order: {
+    //             hearts: 'DESC', // hearts기준 내림차순으로 정렬
+    //             boardId: 'DESC' // hearts가 같은 경우에는 boardId 기준으로 내림차순 정렬(최근게 보이도록 의도함)
+    //         },
+    //         take: 10
+    //     });
+    // }
+
+    //top10
+    async getTop10Boards(user: User): Promise<Board[]>{
+        return this.boardRepository
+            .createQueryBuilder('board')
+            .leftJoin('board.user', 'user')
+            .leftJoin('user.community', 'community')
+            .where('community.communityId = :communityId', {communityId: user.community.communityId})
+            .orderBy('board.hearts', 'DESC')
+            .addOrderBy('board.boardId', 'DESC')
+            .take(10)
+            .getMany();
     }
 }

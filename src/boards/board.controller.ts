@@ -15,10 +15,12 @@ export class BoardsController {
     constructor(private boardsService: BoardsService){}
     private logger = new Logger('boardsController');
 
-    //VALID한 게시물 전부 가져오기
+    //VALID한 게시물 전부 가져오기(소속된 커뮤니티 내)
     @Get()
-    getAllBoards(): Promise<Board[]> {
-        return this.boardsService.getAllBoards();
+    getAllBoards(
+        @GetUser() user: User
+    ): Promise<Board[]> {
+        return this.boardsService.getAllBoards(user);
     }
 
     //id를 이용해서 게시물 가져오기
@@ -28,7 +30,7 @@ export class BoardsController {
     }
 
 
-    //게시물 생성하기, user 정보 같이 넣어주기
+    //게시물 생성하기, user 정보 같이 넣어주기(user정보 있으니까 community 정보도 존재)
     @Post()
     createBoard(
         @Body() createBoardDto: CreateBoardDto,
@@ -46,16 +48,17 @@ export class BoardsController {
         return this.boardsService.deleteBoard(boardId, user);
     }
 
-    //게시물 title, description, location 수정
+    //게시물 title, description, location, photos 수정
     @Patch('/:boardId')
     updateBoard(
         @Param('boardId', ParseIntPipe) boardId,
-        @Body('newtitle') newtitle: string, 
-        @Body('newcontent') newcontent:string,
-        @Body('newlocation') newlocation:string,
+        @Body('title') title: string, 
+        @Body('content') content:string,
+        @Body('location') location:string,
+        @Body('photos') photos: string[],
         @GetUser() user: User,
     ): Promise<Board>{
-        return this.boardsService.updateBoard(boardId, newtitle, newcontent, newlocation, user);
+        return this.boardsService.updateBoard(boardId, title, content, location, photos, user);
     }
 
     //boardId로 Board가져오고, replyRepository에서 newReply 생성해서, Board의 replies 배열에 newReply 추가
@@ -102,9 +105,11 @@ export class BoardsController {
         return this.boardsService.decreaseHearts(boardId);
     }
 
-    //top10
+    //top10(유저가 속한 커뮤니티 내)
     @Get('top/10')
-    getTop10Boards(){
-        return this.boardsService.getTop10Boards();
+    getTop10Boards(
+        @GetUser() user: User,
+    ){
+        return this.boardsService.getTop10Boards(user);
     }
 }

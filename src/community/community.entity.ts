@@ -13,6 +13,6 @@ export class Community extends BaseEntity{
     @Column()
     postsExposurePeriod: number;
 
-    @OneToMany(type => User, user => user.community, {eager: false})
+    @OneToMany(type => User, user => user.community, { nullable: true})
     user: User[];
 }

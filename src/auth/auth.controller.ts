@@ -5,6 +5,7 @@ import { User } from '../user/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
 import { Community } from 'src/community/community.entity';
+import { get } from 'http';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +17,6 @@ export class AuthController {
     //회원가입
     @Post('/signup')
     signUp(@Body() createUserDto: CreateUserDto) : Promise<User>{
-        this.logger.verbose('signing up in controller');
         return this.authService.signUp(createUserDto);
     }
 
