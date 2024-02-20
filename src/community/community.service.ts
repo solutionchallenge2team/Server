@@ -51,4 +51,12 @@ export class CommunityService {
         return community;
     }
 
+    async existCommunity(user: User): Promise<boolean> {
+        if(await user.community){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

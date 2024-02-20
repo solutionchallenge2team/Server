@@ -16,6 +16,7 @@ export class CommunityController {
         return this.communityService.getAllCommunity();
     }
 
+
     //커뮤니티 생성하고 그 커뮤니티를 유저 정보에 저장
     @Post()
     @UseGuards(AuthGuard())   //실험 성공!!
@@ -30,6 +31,7 @@ export class CommunityController {
         this.communityService.addCommunity(found, user);
         return found;
     }
+
 
     @Get('/:communityId')
     getCommunityById(@Param('communityId') communityId: number): Promise<Community> {
@@ -47,4 +49,14 @@ export class CommunityController {
         await this.communityService.addCommunity(community, user);
         return community;
     }
+
+    //커뮤니티가 있는지 검사
+    @Get('/whether/it/exists')
+    @UseGuards(AuthGuard())
+    async existCommunity(
+        @GetUser() user: User,
+    ): Promise<boolean> {
+        return await this.communityService.existCommunity(user);
+    }
+    
 }
