@@ -17,18 +17,18 @@ export class UserRepository extends Repository<User>{
 
     async createUser(createUserDto: CreateUserDto): Promise<User>{
         this.logger.verbose(`${JSON.stringify(createUserDto)} got in to repository`);
- 
+
         const { nickname, email, password, userLevel} = createUserDto;
 
         // this.logger.verbose(`${found} is found`);
 
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        //const hashedPassword = await bcrypt.hash(password, salt);
 
         const user = this.create({
             nickname,
             email,
-            password: hashedPassword,
+            password,
             userLevel,
         });
 

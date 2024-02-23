@@ -7,8 +7,6 @@ import { ReplyRepository } from "src/reply/reply.repository";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { User } from "src/user/user.entity";
 import { BoardStatus } from "./board-status.enum";
-import { promises } from "dns";
-import { ReplOptions } from "repl";
 
 @Injectable()
 export class BoardsService {

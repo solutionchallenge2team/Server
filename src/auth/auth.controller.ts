@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user-dto';
 import { User } from '../user/user.entity';
@@ -20,9 +20,14 @@ export class AuthController {
         return this.authService.signUp(createUserDto);
     }
 
-    //로그인
+    //로그인(프론트에서 아래 있는 Get : alluser이용해서  처리)
     @Post('/signin')
     signIn(@Body() createUserDto: CreateUserDto): Promise<{accessToken: string}> { 
         return this.authService.signIn(createUserDto);
+    }
+
+    @Get('/alluser')
+    getAlluser(): Promise<User[]>{
+        return this.authService.getAllUser();
     }
 }

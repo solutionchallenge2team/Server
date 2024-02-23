@@ -2,12 +2,10 @@ import { Body, Controller, Get, Delete, Param, ParseIntPipe, Post, Patch, UseGua
 import { BoardsService } from "./board.service";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "../auth/dto/create-board-dto";
-import { Reply } from "src/reply/reply.entity";
 import { CreateReplyDto } from "src/auth/dto/create-reply-dto";
 import { AuthGuard } from "@nestjs/passport";
 import { GetUser } from "src/auth/get-user.decorator";
 import { User } from "src/user/user.entity";
-import { repl } from "@nestjs/core";
 
 @Controller('boards')
 @UseGuards(AuthGuard())

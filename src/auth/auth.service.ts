@@ -26,8 +26,6 @@ export class AuthService {
         this.logger.verbose('signing up in service');
         const user = await this.userRepository.createUser(createuserDto);
 
-        await this.signIn(createuserDto);
-
         return user;
     }
 
@@ -45,4 +43,9 @@ export class AuthService {
             throw new UnauthorizedException('login failed');
         }
     }
+
+    async getAllUser(): Promise<User[]> {
+        return this.userRepository.find();
+    }
+
 }
