@@ -53,7 +53,7 @@ export class BoardsService {
     }
 
     //게시물 title, description, location, photos 수정
-    async updateBoard(boardId: number, title: string, content: string, location: string, photos: string, user: User): Promise<Board> {
+    async updateBoard(boardId: number, title: string, content: string, location: string, photos: string[], user: User): Promise<Board> {
         const board = await this.boardRepository.findOne({where: {boardId, user}}); //수정 권한 추가
 
         if (title !== undefined && title !== '') {
@@ -65,7 +65,7 @@ export class BoardsService {
         if (location !== undefined && location !== '') {
             board.location = location;
         }
-        if (photos !== undefined && photos !== '') {
+        if (photos !== undefined) {
             board.photos = photos;
         }
         await this.boardRepository.save(board);

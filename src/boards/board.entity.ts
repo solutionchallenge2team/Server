@@ -21,8 +21,8 @@ export class Board extends BaseEntity{
     @Column()           
     location: string;   //위치
 
-    @Column()
-    photos: string;
+    @Column("text", {array: true})
+    photos: string[];
 
     @CreateDateColumn()
     date: Date;         //날짜

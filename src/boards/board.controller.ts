@@ -53,7 +53,7 @@ export class BoardsController {
         @Body('title') title: string, 
         @Body('content') content:string,
         @Body('location') location:string,
-        @Body('photos') photos: string,
+        @Body('photos') photos: string[],
         @GetUser() user: User,
     ): Promise<Board>{
         return this.boardsService.updateBoard(boardId, title, content, location, photos, user);

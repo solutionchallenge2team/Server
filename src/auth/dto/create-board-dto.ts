@@ -12,5 +12,5 @@ export class CreateBoardDto {
     location: string;   //위치
 
     @IsNotEmpty()
-    photos: string;
+    photos: string[];
 }
